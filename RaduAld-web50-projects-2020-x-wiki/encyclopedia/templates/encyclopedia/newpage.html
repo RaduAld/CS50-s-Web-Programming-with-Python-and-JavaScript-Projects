@@ -1,0 +1,28 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Create New Page
+{% endblock %}
+
+{% block body %}
+    <h1>Create a new page on Wiki</h1>
+    {% if alert != None %}
+        <div class="alert alert-warning" role="alert">
+            {{ alert|safe }}
+        </div>
+    {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Title</label>
+            <input name="title" type="text" class="form-control col-sm-4" id="exampleFormControlInput1" 
+            placeholder="Please enter a title" value= "{{ title }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Content</label>
+            <textarea name="content" class="form-control col-sm-12" id="exampleFormControlTextarea1" rows="5" 
+            placeholder="Please enter the content for your page">{{ content }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Page</button>
+    </form>
+{% endblock %}

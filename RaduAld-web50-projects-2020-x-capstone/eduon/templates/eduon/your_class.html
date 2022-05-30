@@ -1,0 +1,38 @@
+{% extends "eduon/layout.html" %}
+
+{% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById("nav").style.width = document.getElementById("schclass").style.width;
+    })
+</script>
+{% endblock %}
+
+{% block body %}
+    <h1>{{schclass.title}}</h1>
+
+    <table id="schclass">
+        <tr>
+            <th></th>
+            {% for subject in subjects %}
+            <th>
+                {{subject.title}}
+            </th>
+            {% endfor %}
+        </tr>
+        {% for student in students %}
+        <tr>
+            <th>{{student.last_name}} {{student.first_name}}</th>
+            {% for subject in subjects %}
+            <td>
+                {% for grade in grades %}
+                    {% if grade.subject == subject and grade.student == student %}
+                    {{grade.grd_number}};
+                    {% endif %}
+                {% endfor %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

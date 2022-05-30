@@ -1,0 +1,79 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'network/index.js' %}">
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div id="help" style="display: none;">2</div>
+    <div id="allposts">
+        <h3 class="title" id="header">{{ profile.username }}</h3>
+        <div id="profile_page">
+            <div class="card-body row">
+                {% if user.is_authenticated %}
+                <button id="fllw-btn" type="button" class="btn fllw-btn"></button>
+                {% endif %}
+                <h4 style=" color: #FFFCF2; margin: auto 0 auto; margin-right: 2%;">Followers: <div id="followers" style="display: inline;">{{ profile.followers.count }}</div></h4>
+                <h4 style=" color: #FFFCF2; margin: auto 0 auto; margin-right: 2%;">Following: <div id="following" style="display: inline;">{{ profile.following.count }}</div></h4>
+            </div>
+        </div>
+        <div id="posts">
+            {% for post in page_obj %}
+            <div id="card{{post.id}}" class="card post-preview">
+                <div class="card-header top-preview">
+                    <a class="title" style="display:inline;" href="{% url 'profile' post.creator.username %}">{{ post.creator.username }}</a>
+                    <div class="date"> {{ post.timestamp }} </div>
+                </div>
+                <div class="card-body">
+                    <p id="body{{post.id}}">{{ post.body }}</p>
+                    <textarea id="edit-texta{{post.id}}" style="display: none;"></textarea>
+                    <h5 class="likes">Likes:&nbsp;{{ post.likes.count }}</h5>
+                    {% if user.is_authenticated %}
+                    <div id="buttons{{post.id}}" class="buttons">
+                        {% if user == post.creator %}
+                        <button id="edit{{post.id}}" class="btn likedit-btn" onclick="edit('{{post.id}}')">Edit</button>
+                        {% else %}
+                            {% if user in post.likes.all %}
+                            <button class="btn likedit-btn" onclick="like('{{post.id}}', 'unlike')">Unlike</button>
+                            {% endif %}
+                            {% if user not in post.likes.all %}
+                            <button class="btn likedit-btn" onclick="like('{{post.id}}', 'like')">Like</button>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="pagination">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    {% if page_obj.previous_page_number != 1 %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">First</a>
+                    </li>
+                    {% endif %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                </li>
+                {% endif %}
+                <li class="page-item actv" aria-current="page">
+                  <a class="page-link">{{ page_obj.number }}</a>
+                </li>
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                </li>
+                    {% if page_obj.next_page_number != page_obj.paginator.num_pages %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                    </li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

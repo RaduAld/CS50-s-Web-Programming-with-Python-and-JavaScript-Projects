@@ -1,0 +1,30 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Create Listing</h2>
+
+    <form action="{% url 'create_listing' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input class="form-control" type="text" name="title" maxlength="64" placeholder="Title" required>
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" name="description" maxlength="500" placeholder="Description" required>
+        </div>
+        <div class="form-group">
+            <select name="selected_categories" multiple class="form-control" id="exampleFormControlSelect2" required>
+                {% for category in categories %}
+                    <option value="{{ category.categ }}">{{category.categ}}</option>
+                {% endfor %}
+            </select>
+            <h6>To select multiple categories hold CTRL</h6>
+          </div>
+        <div class="form-group">
+            <p style="font-size: 25px; margin: 0; float: left;">$</p><input class="form-control" type="number" name="bid" placeholder="Starting bid" required style="width: 99.25%;">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="url" name="image_url" placeholder="Image url (optional)">
+        </div>
+        <input class="btn btn-primary" type="submit" value="Create Listing">
+    </form>
+{% endblock %}

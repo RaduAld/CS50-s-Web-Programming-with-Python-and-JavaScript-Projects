@@ -1,0 +1,67 @@
+body {
+    background-color: #EFECCA;
+    color: #3A606E;
+    scroll-behavior: smooth;
+}
+
+textarea {
+    min-height: 350px;
+}
+
+hr {
+    background-color: #3A606E;
+}
+
+.date {
+    float: right;
+    font-style: italic;
+}
+
+.preview {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.email-preview, #email-view {
+    border-color: #3A606E;
+    background-color: #A9CBB7;
+    margin-top: 10px;
+}
+
+.card-body {
+    background-color: #CCDCC1;
+}
+
+.line-breaker {
+    white-space: pre-wrap;
+}
+
+.email {
+    height: 100%;
+}
+
+
+.btn {
+    border-color: #3A606E;
+    color: #3A606E;
+    background-color: #A9CBB7;
+    border-radius: 2px;
+    width: fit-content;
+}
+
+.email-btn {
+    margin-top: 5px;
+    margin-right: 10px;
+}
+
+.compose-btn {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.btn:hover {
+    background-color: #3A606E;
+    color: #A9CBB7;
+}

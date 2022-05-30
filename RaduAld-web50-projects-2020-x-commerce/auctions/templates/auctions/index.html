@@ -1,0 +1,36 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+    <h2>{{ title }}</h2>
+    <div class="grid-container">
+        {% for listing in listings %}
+            <div class="grid-item card">
+            {% if listing.active == False %}
+                <a href="{% url 'closed_listing_page' listing.id %}">
+            {% else %}
+                <a href="{% url 'listing' listing.id %}">
+            {% endif %}
+                {% if listing.image_url %}
+                    <img class="card-img-top" src="{{ listing.image_url }}">
+                {% else %}
+                    <img class="card-img-top" src="https://redi.eu/wp-content/uploads/2015/08/not-available-300x217.png">
+                {% endif %}
+                        <div class="card-body">
+                            <h2 class="card-title">{{ listing.title }}</h2>
+                            <h5 class="card-text description">{{ listing.description }}.</h5>
+                            {% for bid in bids %}
+                                {% if bid.listing_name == listing %}
+                                    <p class="card-text">{{ bid.bid }}</p>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    {% if listings == None %}
+        <h4>There are no listings.</h4>
+    {% endif %}
+{% endblock %}
+

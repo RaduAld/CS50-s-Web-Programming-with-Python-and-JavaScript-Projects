@@ -1,0 +1,28 @@
+{% extends "eduon/layout.html" %}
+
+{% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (document.getElementById('#subjects').firstChild){
+            document.getElementById('#subjects').display = 'block';
+        }
+    })
+</script>
+{% endblock %}
+
+{% block body %}
+    <h1>Subjects</h1>
+
+    <div id="subjects" class="grid-container">
+        {% for subject in subjects %}
+        <a class="grid-item card" href="{% url 'class' subject.id %}" style="width: 100%;">
+            <img src="{{subject.image}}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title" style="display: inline;">{{subject.title}} <h6 class="card-text" style="font-size: smaller; display: inline;">({{subject.originclass.title}})</h6></h5>
+                <p class="card-text">{{subject.description}}</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    <div style="display: none;" class="nonexistent">You don't have any subjects yet.</div>
+{% endblock %}

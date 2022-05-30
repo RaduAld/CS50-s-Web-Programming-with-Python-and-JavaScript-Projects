@@ -1,0 +1,9 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+    <h2>Categories</h2>
+    {% for category in categories %}
+        <a class="btn btn-primary categs" href="{% url 'category_page' category.id %}" role="button">{{ category.categ }}</a>
+    {% endfor %}
+{% endblock %} 

@@ -1,0 +1,13 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    {{ title|safe }}
+{% endblock %}
+
+{% block body %}
+    <p>{{ message|safe }}</p>
+    <form method="POST">
+        {% csrf_token %}
+        <a class="btn btn-primary" href="edit_page/" role="button">Edit</a>
+    </form>
+{% endblock %}

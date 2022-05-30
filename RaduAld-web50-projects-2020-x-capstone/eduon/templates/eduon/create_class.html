@@ -1,0 +1,54 @@
+{% extends "eduon/layout.html" %}
+
+{% block script %}
+<script>
+    function create_class(){
+        const title = document.querySelector("#title").value;
+        var students = [];
+        for (var option of document.getElementById('students').options){
+            if (option.selected) {
+                students.push(option.value);
+            }
+        }
+        fetch('/your_class', {
+            method: 'PUT',
+            body: JSON.stringify({
+                title: title,
+                students: students
+            })
+        })
+        .then(response => response.json())
+        .then(json => {
+            console.log(json);
+            })
+    }
+</script>
+{% endblock %}
+
+{% block body %}
+    <h1>Create Your Class</h1>
+
+    <form class="container">
+        <div class="row change">
+            <div class="col">
+                <label for="title">Grade:</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" name="title" id="title" required>
+            </div>
+        </div>
+        <div class="row change">
+            <div class="col">
+                <label for="students">Students:</label>
+            </div>
+            <div class="col">
+                <select multiple class="form-control" style="height: 450px;" name="students" id="students" required>
+                    {% for student in students.all %}
+                    <option value="{{student.id}}">{{student.last_name}} {{student.first_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <button class="btn btn-primary" onclick="create_class()" style="float: right;">Create</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "eduon/layout.html" %}
+
+{% block script %}
+{% endblock %}
+
+{% block body %}
+    {% if request.user.role == 'PT' %}
+    <h1>Grades for {{request.user.child.first_name}}</h1>
+    {% else %}
+    <h1>Grades for {{request.user.first_name}}</h1>
+    {% endif %}
+
+    {% if grades != None %}
+    <table id="grades" class="container">
+        {% for subject in subjects %}
+        <tr>
+            <th class="brd">
+                {{subject.title}}
+            </th>
+            <td class="brd">
+                {% for grade in grades %}
+                    {% if grade.subject == subject %}
+                    {{grade.grd_number}}-{{grade.timestamp.day}}/{{grade.timestamp.month}};
+                    {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <div>
+        You don't have any grades yet.
+    </div>
+    {% endif %}
+{% endblock %}

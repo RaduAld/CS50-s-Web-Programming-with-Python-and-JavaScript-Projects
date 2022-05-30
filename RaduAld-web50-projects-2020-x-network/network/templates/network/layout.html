@@ -1,0 +1,62 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Social Network{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'network/styles.css' %}" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+    {% block script %}
+    {% endblock %}
+    <body>
+        <nav class="navbar navbar-expand-lg">
+            <a class="navbar-brand btn" href="{% url 'index' %}">Network</a>
+          
+            <div>
+              <ul class="navbar-nav mr-auto">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link btn" href="{% url 'profile' user.username %}"><strong id="logged">{{ user.username }}</strong></a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link btn" href="{% url 'index' %}">All Posts</a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <button class="nav-link btn" id="new_post_btn">New Post</button>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn" href="{% url 'following' %}">Following</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn" href="{% url 'logout' %}">Log Out</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link btn" href="{% url 'login' %}">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn" href="{% url 'register' %}">Register</a>
+                    </li>
+                {% endif %}
+              </ul>
+            </div>
+          </nav>
+        
+        <div class="body">
+            <div class="card" id="new-post-form">
+                <form method="POST">
+                    {% csrf_token %}
+                    <h5 id="form-header" style="color: #524E49;">New Post</h5>
+                    <textarea id="texta-new" name="body" class="form-control" rows="4"></textarea>
+                    <button id="post-btn" type="button" class="btn likedit-btn">Post</button>
+                </form>
+            </div>
+            {% block body %}
+            {% endblock %}
+        </div>
+    </body>
+</html>

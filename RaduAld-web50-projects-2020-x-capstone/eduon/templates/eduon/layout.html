@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}EduOn{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'eduon/styles.css' %}" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        {% block script %}
+        {% endblock %}
+    </head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <body>
+        <nav id="nav" class="nav">
+            <a class="nav-link disabled" href="/">EduOn</a>
+            {% if user.is_authenticated %}
+            <a class="nav-link disabled" href="/">{{ request.user.first_name }}</a>
+                {% if request.user.role == 'ST' or request.user.role == 'PT' %}
+                <a class="nav-link" href="{% url 'index' %}">Subjects</a>
+                <a class="nav-link" href="{% url 'grades' %}">Grades</a>
+                {% elif request.user.role == 'TC' %}
+                <a class="nav-link" href="/">Your Subjects</a>
+                <a class="nav-link" href="{% url 'create_subject' %}">Create Subject</a>
+                <a class="nav-link" href="{% url 'your_class' %}">Your Class</a>
+                {% endif %}
+            <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+            {% else %}
+            <a class="nav-link" href="{% url 'login' %}">Log In</a>
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
+            {% endif %}
+          </nav>
+        <div id="body">
+        {% block body %}
+        {% endblock %}
+        </div>
+    </body>
+</html>

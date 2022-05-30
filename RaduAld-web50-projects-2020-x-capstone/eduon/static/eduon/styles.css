@@ -1,0 +1,177 @@
+body {
+    background-color: #F4E9CD;
+    color: #468189;
+}
+
+.btn-primary {
+    background-color: #9DBEBB;
+    border: 1px #468189;
+    color: #F4E9CD;
+}
+
+.btn-primary:hover {
+    background-color: #468189;
+}
+
+#body {
+    padding: 1% 5% 1%;
+}
+
+.nav {
+    width: 100%;
+    padding: 0.5%;
+    background-color: #9DBEBB;
+}
+
+.nav-link {
+    color: #7c8089;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-gap: 1%;
+}
+
+.card {
+    background-color: #C9D4C4;
+}
+
+.card-title, .card-text {
+    color: #468189;
+}
+
+.sub {
+    background-color: #C9D4C4;
+    color: #468189;
+    font-size: medium;
+    padding: 5px;
+    padding-left: 15px;
+    border-radius: 25px 25px 0px 0px;
+}
+
+.main_img {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 25px;
+}
+
+.main_img img {
+    position: absolute;
+    left: -1000%;
+    right: -1000%;
+    top: -1000%;
+    bottom: -1000%;
+    margin: auto;
+    min-height: 100%;
+    min-width: 100%;
+}
+
+#left {
+    float: left;
+    width: 30%;
+    padding: 1.5%;
+    background-color: #C9D4C4;
+    border-radius: 0px 0px 0px 25px;
+}
+
+#left div {
+    margin-top: 20px;
+}
+
+#left :first-child{
+    margin-top: 0px;
+}
+
+#announcements {
+    float: right;
+    width: 69%;
+}
+
+.annoucement {
+    background-color: #C9D4C4;
+    padding: 1%;
+    margin-bottom: 1%;
+    border-radius: 25px;
+}
+
+#homework-items button {
+    color: #468189;
+}
+
+.cls {
+    border: 1px solid #468189;
+    margin-bottom: 5px;
+}
+
+.brd {
+    border: 1px solid #9DBEBB;
+}
+
+.change {
+    margin-bottom: 10px;
+}
+
+#schclass {
+    width: fit-content;
+}
+
+tr, td, th{
+    border: 1px solid #468189;
+}
+
+th {
+    width: auto;
+    min-width: 100px;
+    max-width: 200px;
+}
+
+@media only screen and (max-width: 600px) {
+    .grid-container {
+        grid-template-columns: 100%;
+    }
+
+    #left {
+        width: 100%;
+        padding: 2%;
+        background-color: #C9D4C4;
+        border-radius: 0px 0px 25px 25px;
+    }
+    
+    #announcements {
+        float: none;
+        width: 100%;
+    }
+    
+    .annoucement {
+        padding: 2%;
+    }
+  }
+
+@media only screen and (max-width: 768px) and (min-width: 600px) {
+    .grid-container {
+        grid-template-columns: 100%;
+    }
+
+    #left {
+        width: 100%;
+        padding: 2%;
+        background-color: #C9D4C4;
+        border-radius: 0px 0px 25px 25px;
+    }
+    
+    #announcements {
+        float: none;
+        width: 100%;
+    }
+    
+    .annoucement {
+        padding: 2%;
+    }
+
+    .grid-container {
+        grid-template-columns: 50% 50%;
+    }
+}

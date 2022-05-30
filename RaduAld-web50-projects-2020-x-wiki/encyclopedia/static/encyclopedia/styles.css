@@ -1,0 +1,101 @@
+body {
+    width: 99%;
+    margin: 0;
+    background-color: #BFEDE6;
+    color: #312f2f;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+code {
+    white-space: pre;
+}
+
+label {
+    font-size: large;
+    color: #312f2f;
+}
+
+.ttl {
+    font-size: 400%;
+    color: #CC0300;
+    font-weight: bold;
+}
+
+h1 {
+    font-size: 50px;
+    margin-top: 0px;
+    color: #CC0300;
+    font-weight: bold;
+}
+
+h2 {
+    color: #CC0300;
+    font-weight: bold;
+}
+
+textarea {
+    height: 90vh;
+    width: 80%;
+}
+
+a {
+    color: #312f2f;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #CC0300;
+    text-decoration: none;
+}
+
+.alert {
+    background-color: #f5c5c4;
+    color: #b47978;
+    border-color: #b47978;
+}
+
+.btn {
+    color: white;
+    background-color: #CC0300;
+    border: 0;
+}
+
+.btn:hover {
+    background-color: #84DCCF;
+}
+
+.tur {
+    color: #84DCCF;
+    text-decoration: none;
+}
+
+.tur:hover {
+    color: #CC0300;
+    text-decoration: none;
+}
+
+.list-group-item {
+    width: 50%;
+    border-radius: 20px;
+}
+
+.main {
+    padding: 3%;
+}
+
+.search {
+    width: 100%;
+    font-size: 15px;
+    line-height: 15px;
+    padding: 3%;
+}
+
+.sidebar {
+    background-color: #312f2f;
+    height: 100vh;
+    padding: 1.5%;
+}
+
+.sidebar h2 {
+    margin-top: 5px;
+}

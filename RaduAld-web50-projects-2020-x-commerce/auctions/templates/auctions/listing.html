@@ -1,0 +1,112 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div class="card mb-12">
+        <div class="row no-gutters">
+        {% if listing.image_url %}
+                <img class="listing_image col" src="{{ listing.image_url }}" style="width: 100%;">
+        {% endif %}
+            <div class="text col">
+                <h2>{{ listing.title }}</h2>
+                <h6>Created by: <strong>{{ listing.user.username }}</strong></h6>
+                <h3>Price:</h3>
+                <h5>${{ highest_bid.bid }}</h5>
+                <h3>Description:</h3>
+                <h5 style="max-height: 300px; max-width: 400px;">{{ listing.description }}</h5>
+                {% if listing.active %}
+                    {% if user.is_authenticated %}
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                {% if close %}
+                                    <input name="but" value="Close Listing" type="submit" class="btn btn-primary">
+                                {% endif %}
+                                {% if not wl %}
+                                    <input name="but" value="Add to Watchlist" type="submit" class="btn btn-primary">
+                                {% else %}
+                                    <input name="but" value="Remove from Watchlist" type="submit" class="btn btn-primary">
+                                {% endif %}
+                            </div>
+                        {% if alert %}
+                            <h5 role="alert">
+                                {{ alert }}
+                            </h5>
+                        {% endif %}
+                            <div>{{ bids_number }} bid(s) so far.</div>
+                                <div class="form-row">
+                                        <p style="font-size: 25px; margin: 0;">$</p>
+                                        <input name="bid" onclick="add_bid()" type="number" class="form-control" placeholder="Bid" style="margin-left: 2px; margin-right: 2px; width: 150px;">
+                                        <input name="but" value="Place Bid" type="submit" class="btn btn-primary">
+                                </div>
+                        </form>
+                    {% endif %}
+                {% endif %}
+            </div>
+            {% if not listing.active %}
+                <div class="col text">
+                    <h3>Comments:</h3>
+                    {% if comments %}
+                        {% for comment in comments %}
+                            <h5><strong>{{ comment.user.username }}</strong></h5>
+                            <p>{{ comment.text }}</p>
+                        {% endfor %}
+                    {% else %}
+                        <h5 style="width: 171px;">No comments, yet.</h5>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% if user.is_authenticated %}     
+        {% if listing.active %}
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>Create a Comment</h3>
+                            <form method="POST">      
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="comment" placeholder="Comment">
+                                </div>
+                                <input name="but" value="Add Comment" type="submit" class="btn btn-primary">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>Comments:</h3>
+                            {% if comments %}
+                                {% for comment in comments %}
+                                    <h5><strong>{{ comment.user.username }}</strong></h5>
+                                    <p>{{ comment.text }}</p>
+                                {% endfor %}
+                            {% else %}
+                                <h5 style="width: 171px;">No comments, yet.</h5>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% if not listing.active %}
+            {% if user == highest_bid.user %}
+            <div class="big">
+                Congratulations {{ user.username }}! You won this listing!
+            </div>
+            {% else %}
+            <div class="big">
+                Sold!
+            </div>
+            {% endif %}
+        {% endif %}
+    {% else %}
+        <div>
+            To place bids, add coments or simply add to your watchlist, please 
+            <a class="nav-link" href="{% url 'login' %}" style="display: inline; font-weight: bold; margin: 0px;">Log In</a> 
+            or <a class="nav-link" href="{% url 'register' %}" style="display: inline; font-weight: bold; margin: 0px;">Register</a>.
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,189 @@
+{% extends "eduon/layout.html" %}
+
+{% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        homework_content=document.querySelector('#homework-items');
+        if (homework_content.children.length == 0){
+            homework_content.innerHTML = "No homework.";
+        }
+        announcements_content=document.querySelector('#announcements-content');
+        if (announcements_content.children.length == 0){
+            announcements_content.innerHTML = "No announcements.";
+        }
+        grade_content=document.querySelector('#grade-items');
+        if (grade_content.children.length == 0){
+            grade_content.innerHTML = "No grades.";
+        }
+    })
+    function homework(homework_id){
+        const hide = document.querySelector("#dets" + homework_id)
+        if (hide.style.display == "none"){
+            hide.style.display = "block"
+        } else {
+            hide.style.display = "none"
+        }
+    }
+    function post_ann(){
+        $('#ann_alert').hide()
+        const val = document.querySelector("#ann-texta").value
+        if(val == ''){
+            $('#ann_alert').show()
+        } else {
+        fetch('/class/' + "{{ subject.id }}", {
+              method: 'PUT',
+              body: JSON.stringify({
+                  mtd: 'announcement',
+                  text: val
+              })
+            })
+            .then(response => response.json())
+            .then(json => {
+                console.log(json);
+                location.reload();
+                })}
+    }
+    function create_homework(){
+        $('#hmw_alert').hide();
+        const title = document.querySelector("#hmw-title").value;
+        const val = document.querySelector("#hmw-texta").value;
+        const date = document.querySelector("#hmw-start").value;
+        if (title === '' || val === '' || date === ''){
+            $('#hmw_alert').show();
+        } else {
+        fetch('/class/' + "{{ subject.id }}", {
+              method: 'PUT',
+              body: JSON.stringify({
+                  mtd: 'homework',
+                  title: title,
+                  text: val,
+                  end: date
+              })
+            })
+            .then(response => response.json())
+            .then(json => {
+                console.log(json);
+                $("#homework").load(document.URL +  ' #homework');
+                $("#create_homework").load(document.URL +  ' #create_homework');
+                })}
+    }
+    function create_grade(){
+        $('#grd_alert').hide()
+        $("#grade-created").hide();
+        const grade_nb = document.querySelector("#grd-number").value
+        const student = document.querySelector("#grd-student").value
+        if (grade_nb < 1 || grade_nb > 10 || student == '' || student == 'Student'){
+            $('#grd_alert').show()
+        } else {
+        fetch('/class/' + "{{ subject.id }}", {
+            method: 'PUT',
+            body: JSON.stringify({
+                mtd: 'grade',
+                grade: grade_nb,
+                student_id: student
+            })
+        })
+            .then(response => response.json())
+            .then(json => {
+                console.log(json);
+                $("#grd-number").val('');
+                $("#grd-student").val(0);
+                $("#grade-created").show();
+                $("#all_grades").load(document.URL +  ' #all_grades');
+                })}
+    }
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="main_img">
+    <img src="{{subject.image}}" style="overflow: hidden;">
+</div>
+<div class="sub">Teacher: {{subject.teacher.first_name}} {{subject.teacher.last_name}}</div>
+<div>
+    <div id="left">
+        <div id="homework">
+            <h4>Homework</h4>
+            <ul id="homework-items">
+                {% for homework in homework %}
+                <li>
+                    <button class="btn" onclick="homework('{{homework.id}}')">{{homework.title}}</button>
+                    <div id="dets{{homework.id}}" class="dets" style="display: none;">
+                        <p style="word-wrap: break-word;">{{homework.text}}</p>
+                        <p style="font-size: smaller;">due: {{homework.end}}</p>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% if request.user.role != "TC" %}
+        <div id="class_grades">
+            <h4>Grades</h4>
+            <ul id="grade-items">
+                {% for grade in grades %}
+                <li>
+                    <div>{{grade.grd_number}}-{{grade.timestamp.day}}/{{grade.timestamp.month}}</div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% else %}
+        <div id="create_homework">
+            <h4>Assign Homework</h4>
+            <div id="hmw_alert" style="display: none;">Please fill in the form!</div>
+            <div>
+                <input id="hmw-title" class="form-control" type="text" placeholder="Homework title" required>
+                <textarea id="hmw-texta" class="form-control" rows="3" required></textarea>
+                End date: <input type="date" id="hmw-start" required><br>
+                <button class="btn btn-primary" onclick="create_homework()">Create</button>
+            </div>
+        </div>
+        <div id="create_grade">
+            <h4>Create Grade</h4>
+            <div>
+                <div id="grd_alert" style="display: none;">Please fill in the gaps, and enter a valid number!</div>
+                <p id="grade-created" style="display: none;">Grade created.</p>
+                <input id="grd-number" class="form-control" type="number" placeholder="Grade" required>
+                <select id="grd-student" class="form-control" required>
+                    <option selected>Student</option>
+                    {% for student in students.all %}
+                    <option value="{{student.id}}">{{student.last_name}} {{student.first_name}}</option>
+                    {% endfor %}
+                </select>
+                <p id="grade-created" style="display: none;">Grade created.</p>
+                <button class="btn btn-primary" onclick="create_grade()">Create</button>
+            </div>
+        </div>
+        <div id="all_grades">
+            <h4>All Grades</h4>
+            <div>
+                {% for student in students.all %}
+                <p>{{student.last_name}} {{student.first_name}}: {% for grade in grades %}{% if grade.student == student %}{{grade.grd_number}}; {% endif %}{% endfor %}</p>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <div id="announcements">
+        <h4>Announcements</h4>
+        {% if request.user.role != 'PT' %}
+        <div class="annoucement">
+            <h5>Create New Annoucement</h5>
+            <div id="ann_alert" style="display: none;">Please type something in!</div>
+            <textarea id="ann-texta" class="form-control" rows="3"></textarea>
+            <button class="btn btn-primary" onclick="post_ann()">Post</button>
+        </div>
+        {% endif %}
+        <div id='announcements-content'>
+            {% for annoucement in announcements %}
+            <div class="annoucement">
+                <h5>{{annoucement.user.first_name}} {{annoucement.user.last_name}}</h5>
+                <p style="word-wrap: break-word;">{{annoucement.text}}</p>
+                <p style="width: 100%; text-align: right; font-size: small;">{{annoucement.timestamp}}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
